@@ -55,6 +55,7 @@ To run the application, use the provided `run_app.R` script contained in either 
 ## Requirements
 
 - A working installation of R (version 4.0 or higher is recommended).
+- Internet connection if you think you may need to install some of the packages.
 
 ---
 
@@ -69,6 +70,7 @@ Below is a list of R packages required to run the application. Using the run_app
   library(shinyFiles) #Saving files
   library(DT) #interactive data tables
   library(htmlwidgets) #additional html items and features
+  library(devtools) #Used for installing github packages
   
   # For data
   library(dplyr) #Data wrangling 
@@ -76,6 +78,7 @@ Below is a list of R packages required to run the application. Using the run_app
   library(readr) #reading and writing files
   library(DESeq2) #Used for Differential Gene Expression
   library(SummarizedExperiment) #Used for Differential Gene Expression
+  devtools::install_github("Lmilazzo/BioVis")
   library(BioVis) #My R package from github with plotting functions (Only used in Version 1.0.0)
   library(pathfindR) #Used for Pathway Enrichment 
   
