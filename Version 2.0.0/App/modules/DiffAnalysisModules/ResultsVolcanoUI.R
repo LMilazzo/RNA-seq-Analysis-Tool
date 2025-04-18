@@ -59,6 +59,7 @@ ResultsVolcanoUI <- function(id){
             ),
             style = "border: 2px solid #272b30; border-radius: 15px; padding-left: 5px; margin-top: 5px; overflow: auto;"
           ),
+          savePlotButton(id),
           style = "overflow: auto;"
         ),
         #----

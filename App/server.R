@@ -2384,6 +2384,8 @@ server <- function(input, output, session) {
       
       #   PLOT THE DATA
       #______________________________
+      #
+      print(data)
       plot <- pheatmap(data, 
                scale = 'row', 
                fontsize = 15, 

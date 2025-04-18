@@ -3,6 +3,7 @@ ResultsGeneCountsServer <- function(id, Data, Uploads){
     
     ns <- session$ns
     
+    plot <- reactiveVal(NULL)
     #Data ~~~~~~~~~
     # DiffResults <- list(
     #    "contrasts" = list, can be null
@@ -133,7 +134,7 @@ ResultsGeneCountsServer <- function(id, Data, Uploads){
       if (!is.na(input$shape) && input$shape != "None") { a$shape <- as.name(input$shape) }
       if (!is.na(input$size) && input$size != "None") { a$size <- as.name(input$size) }
       
-      plot <- ggplot(data, a) +
+      p <- ggplot(data, a) +
         labs(
           title = ifelse(is.null(Title()) || Title() == "", main, Title()),
           subtitle = Subtitle(), 
@@ -168,12 +169,14 @@ ResultsGeneCountsServer <- function(id, Data, Uploads){
         
       #ADD Final size scale
       if(input$size != "None"){
-        plot <- plot + scale_size_discrete(range = c(3, 10)) + geom_jitter(width = 0.2, height = 0)
+        p <- p + scale_size_discrete(range = c(3, 10)) + geom_jitter(width = 0.2, height = 0)
       }else{
-        plot <- plot + geom_jitter(size=4, width = 0.2, height = 0)
+        p <- p + geom_jitter(size=4, width = 0.2, height = 0)
       }
       
-      plot
+      plot(p)
+      
+      plot()
       
     },
       width = function() {ifelse(is.na(input$W), 750, input$W)},
@@ -199,20 +202,27 @@ ResultsGeneCountsServer <- function(id, Data, Uploads){
       
     }
     
-   
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    #______________________________________SAVING____________________________________
+    observeEvent(input$SavePlot,{
+
+      showModal(modalDialog(
+        title = "Enter File Name",  # Title of the modal
+        textInput(ns("fileName"), "File Name:", value = ""),  # Text input for the file name
+        radioButtons(ns("extension"), label = "File Extension", choices = c(".jpeg", ".png"), selected = ".png", inline = TRUE, width = "100%"),
+        footer = tagList(
+          modalButton("Cancel"),  # Cancel button to close the modal
+          actionButton(ns("saveFile"), "Save")  # Save button to handle the file name
+        )
+      ))
+
+    })
+    observeEvent(input$saveFile, {
+      removeModal()
+      saveFile(plot, input$fileName, input$extension, input$W, input$H)
+    })
+
     
     
     

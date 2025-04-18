@@ -23,6 +23,9 @@ ResultsPcaUI <- function(id){
               uiOutput(ns("N")),
               style = "width: 100%; margin-top: 10px; margin-bottom: 15px; font-size: 17px;"
             ),
+            style = "border: 2px solid #272b30; border-radius: 15px; padding-left: 5px; margin-top: 5px;"
+          ),
+          div(id = ns("collapibles"),
             #Annotations to show Color----
             div(class = "collapsible-container",
                 tags$details(
@@ -63,10 +66,10 @@ ResultsPcaUI <- function(id){
                   )
                 ),
                 style = "margin-top: 5px;"
-            )
-            #----
-          )
-
+            ),
+            style = "border: 2px solid #272b30; border-radius: 15px; padding-left: 5px; margin-top: 5px; padding-right: 5px;"
+          ),
+          savePlotButton(id)
         ),
         #----
         #   SETTINGS ----

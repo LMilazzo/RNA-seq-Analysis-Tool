@@ -3,6 +3,8 @@ ResultsPcaServer <- function(id, Data, Uploads){
 
     ns <- session$ns
   
+    
+    plot <- reactiveVal(NULL)
     #Data ~~~~~~~~~
     # DiffResults <- list(
     #    "contrasts" = list, can be null
@@ -95,27 +97,31 @@ ResultsPcaServer <- function(id, Data, Uploads){
     output$PCA <- renderPlot(
       {
         
-        getPCA(
-          Data$vstObject(), 
-          input
-        ) +
-          #Add custom Aspect ratio
-          theme(aspect.ratio = as.numeric(input$Aspect)) +
-          #Add the custom font size
-          theme(
-            text = element_text(size = input$Font, color = "black"),
-            plot.title = element_text(size = input$Font + 5, color = "black", margin=margin(20,20,5,10,"pt")),
-            plot.subtitle = element_text(size = input$Font + 2, color = "black", margin=margin(5,5,15,10,"pt")),
-            plot.caption = element_text(size = input$Font - 2, color = "black", margin=margin(10, 10, 10, 10, "pt"))
+        plot(
+          getPCA(
+            Data$vstObject(), 
+            input
           ) +
-          #Add The custum grid lines
-          eval(parse(text=as.character(input$Grid))) + 
-          #Labels
-          labs(
-            title = Title(), 
-            subtitle = Subtitle(), 
-            caption = Caption()
-          )
+            #Add custom Aspect ratio
+            theme(aspect.ratio = as.numeric(input$Aspect)) +
+            #Add the custom font size
+            theme(
+              text = element_text(size = input$Font, color = "black"),
+              plot.title = element_text(size = input$Font + 5, color = "black", margin=margin(20,20,5,10,"pt")),
+              plot.subtitle = element_text(size = input$Font + 2, color = "black", margin=margin(5,5,15,10,"pt")),
+              plot.caption = element_text(size = input$Font - 2, color = "black", margin=margin(10, 10, 10, 10, "pt"))
+            ) +
+            #Add The custum grid lines
+            eval(parse(text=as.character(input$Grid))) + 
+            #Labels
+            labs(
+              title = Title(), 
+              subtitle = Subtitle(), 
+              caption = Caption()
+            )
+        )
+        
+        plot()
       
       },
       width = function() {ifelse(is.na(input$W), 750, input$W)},
@@ -173,6 +179,27 @@ ResultsPcaServer <- function(id, Data, Uploads){
 
       return(plot)
     }
+    
+    
+    #______________________________________SAVING____________________________________
+    observeEvent(input$SavePlot,{
+      
+      showModal(modalDialog(
+        title = "Enter File Name",  # Title of the modal
+        textInput(ns("fileName"), "File Name:", value = ""),  # Text input for the file name        
+        radioButtons(ns("extension"), label = "File Extension", choices = c(".jpeg", ".png"), selected = ".png", inline = TRUE, width = "100%"),
+        footer = tagList(
+          modalButton("Cancel"),  # Cancel button to close the modal
+          actionButton(ns("saveFile"), "Save")  # Save button to handle the file name
+        )
+      ))
+      
+    })
+    observeEvent(input$saveFile, {
+      removeModal()
+      saveFile(plot, input$fileName, input$extension, input$W, input$H)
+    })
+    
     
   })
 }

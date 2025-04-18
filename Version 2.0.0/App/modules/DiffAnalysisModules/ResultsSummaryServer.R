@@ -126,7 +126,25 @@ ResultsSummaryServer <- function(id, Data, Uploads){
       )
     })
     
-    #Show Extra Rows 
+    #______________________________________SAVING____________________________________
+    observeEvent(input$SaveTable,{
+
+      showModal(modalDialog(
+        title = "Enter File Name",  # Title of the modal
+        textInput(ns("fileName"), "File Name:", value = ""),  # Text input for the file name
+        radioButtons(ns("textension"), label = "Extension", choices = c(".csv", ".tsv"), selected = ".csv", inline = TRUE, width = "100%"),
+        footer = tagList(
+          modalButton("Cancel"),  # Cancel button to close the modal
+          actionButton(ns("saveTable"), "Save")  # Save button to handle the file name
+        )
+      ))
+
+    })
+    observeEvent(input$saveTable, {
+      removeModal()
+      saveTable(Data$Results, input$fileName, input$textension)
+    })
+
     
   })
 }

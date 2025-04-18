@@ -6,7 +6,7 @@ ResultsSummaryUI <- function(id){
     
     sidebarPanel(
       width = 3,
-      
+      saveTableButton(id),
       #CHANGE PVAL
       div(
         p("P-value: ", style = "margin-bottom: 18px; font-size: 18px;"),
@@ -15,31 +15,41 @@ ResultsSummaryUI <- function(id){
           selected = "Ignore",
           width = "50%"
         ),
-        style = "display: flex; align-items: center; gap: 5%; width: 100%; "
+        style = "display: flex; align-items: center; gap: 5%; width: 100%; border: 2px solid #272b30; border-radius: 15px; 
+        padding-left: 5px; padding-right: 5px; margin-top: 10px; padding-top: 5px;"
       ),
       
       #PVAL STATS
       div(
-        DTOutput(ns("PvalStats")), #DT
-        style = "width: 90%; text-align: center; font-size: 16px; overflow: auto;"
-      ),
-      
-      div(
-        plotOutput(ns("PvalHisto"), height = "100%", width = "90%"), #HISTOGRAM
-        style = "max-height: 300px; height: 300px; margin-top: 15px; overflow: auto;"
+        p("P-value: ", style = "margin-bottom: 18px; font-size: 18px;"),
+        div(
+          DTOutput(ns("PvalStats")), #DT
+          style = "width: 90%; text-align: center; font-size: 16px; overflow: auto;"
+        ),
+        
+        div(
+          plotOutput(ns("PvalHisto"), height = "100%", width = "90%"), #HISTOGRAM
+          style = "max-height: 300px; height: 300px; margin-top: 15px; overflow: auto;"
+        ),
+        style = "border: 2px solid #272b30; border-radius: 15px; padding-left: 5px; padding-right: 5px;
+        padding-top: 15px; margin-top: 10px;"
       ),
       
       #FOLD CHANGE STATS
       div(
-        p("Fold Change: ", style = "margin-bottom: 18px; margin-top: 16px; font-size: 18px; text-align: left;"),
-        DTOutput(ns("FoldStats")), #DT
-        style = "width: 90%; text-align: center; font-size: 16px; overflow: auto;"
-      ),
-      
-      div(
-        plotOutput(ns("FoldHisto"), height = "100%", width = "90%"), #HISTOGRAM
-        style = "max-height: 300px; height: 300px; margin-top: 15px; overflow: auto;"
-      ),
+        div(
+          p("Fold Change: ", style = "margin-bottom: 18px; margin-top: 5px; font-size: 18px; text-align: left;"),
+          DTOutput(ns("FoldStats")), #DT
+          style = "width: 90%; text-align: center; font-size: 16px; overflow: auto;"
+        ),
+        
+        div(
+          plotOutput(ns("FoldHisto"), height = "100%", width = "90%"), #HISTOGRAM
+          style = "max-height: 300px; height: 300px; margin-top: 15px; overflow: auto;"
+        ),
+        style = "border: 2px solid #272b30; border-radius: 15px; padding-left: 5px; padding-right: 5px; 
+        padding-top: 10px; margin-top: 10px;"
+      )
       
     ),
     

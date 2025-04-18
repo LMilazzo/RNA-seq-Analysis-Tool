@@ -14,63 +14,67 @@ ResultsGeneCountsUI <- function(id){
           div(
             p("Search: ", style = "margin-right: 5%; padding-bottom: 2%"),
             textInput(ns("main"), label = NULL, value = "", width = "50%"),
-            style = "margin-top: 10px; margin-bottom: 5px; display: inline-flex; font-size: 17px; align-items: center;"
+            style = "border: 2px solid #272b30; border-radius: 15px; padding-left: 5px; margin-top: 5px; padding-right: 5px; font-size: 17px"
           ),
-          #Annotations to show x----
-          div(class = "collapsible-container",
-            tags$details(
-              tags$summary(
-                p("X axis", style = "margin-right: 5%; padding-bottom: 2%")
+          div(id = "collapibles",
+            #Annotations to show x----
+            div(class = "collapsible-container",
+              tags$details(
+                tags$summary(
+                  p("X axis", style = "margin-right: 5%; padding-bottom: 2%")
+                ),
+                tags$div(class = "content", 
+                         uiOutput(ns("x"), width = "100%"), 
+                         style = ""
+                )
               ),
-              tags$div(class = "content", 
-                       uiOutput(ns("x"), width = "100%"), 
-                       style = ""
-              )
+              style = "margin-top: 5px;"
             ),
-            style = "margin-top: 5px;"
-          ),
-          #----
-          #Annotations to show Color----
-          div(class = "collapsible-container",
-              tags$details(
-                tags$summary(
-                  p("Color", style = "margin-right: 5%; padding-bottom: 2%")
+            #----
+            #Annotations to show Color----
+            div(class = "collapsible-container",
+                tags$details(
+                  tags$summary(
+                    p("Color", style = "margin-right: 5%; padding-bottom: 2%")
+                  ),
+                  tags$div(class = "content", 
+                           uiOutput(ns("color"), width = "100%"), 
+                           style = ""
+                  )
                 ),
-                tags$div(class = "content", 
-                         uiOutput(ns("color"), width = "100%"), 
-                         style = ""
-                )
-              ),
-              style = "margin-top: 5px;"
-          ),
-          #----
-          #Annotations to show Shape----
-          div(class = "collapsible-container",
-              tags$details(
-                tags$summary(
-                  p("Shape", style = "margin-right: 5%; padding-bottom: 2%")
+                style = "margin-top: 5px;"
+            ),
+            #----
+            #Annotations to show Shape----
+            div(class = "collapsible-container",
+                tags$details(
+                  tags$summary(
+                    p("Shape", style = "margin-right: 5%; padding-bottom: 2%")
+                  ),
+                  tags$div(class = "content", 
+                           uiOutput(ns("shape"), width = "100%"), 
+                           style = ""
+                  )
                 ),
-                tags$div(class = "content", 
-                         uiOutput(ns("shape"), width = "100%"), 
-                         style = ""
-                )
-              ),
-              style = "margin-top: 5px;"
-          ),
-          #----
-          #Annotations to show Size----
-          div(class = "collapsible-container",
-              tags$details(
-                tags$summary(
-                  p("Size", style = "margin-right: 5%; padding-bottom: 2%")
+                style = "margin-top: 5px;"
+            ),
+            #----
+            #Annotations to show Size----
+            div(class = "collapsible-container",
+                tags$details(
+                  tags$summary(
+                    p("Size", style = "margin-right: 5%; padding-bottom: 2%")
+                  ),
+                  tags$div(class = "content", 
+                           uiOutput(ns("size"), width = "100%"), 
+                           style = ""
+                  )
                 ),
-                tags$div(class = "content", 
-                         uiOutput(ns("size"), width = "100%"), 
-                         style = ""
-                )
-              ),
-              style = "margin-top: 5px;"
-          )
+                style = "margin-top: 5px;"
+            ),
+            style = "border: 2px solid #272b30; border-radius: 15px; padding-left: 5px; margin-top: 5px; padding-right: 5px;"
+          ),
+          savePlotButton(id),
           #----
         ),
         tabPanel(

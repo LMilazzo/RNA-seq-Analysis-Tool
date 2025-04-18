@@ -44,7 +44,7 @@ server <- function(input, output, session){
   #Validate Diff Display For Current Status
   observe({
     invalidateLater(500)
-    
+
     #Case when there is any data at all
     if(DiffUploads$status() != 0 ){
       shinyjs::hide("Diff-Uploads")
@@ -68,6 +68,57 @@ server <- function(input, output, session){
   #       APPLICATION STAGE 2 RAT PATHS
   #________________________________________________
   
-  PathUploads <- PathUploadsServer("Path-Uploads")
+  #Pathway Enrichment Uploads Data
+  # PathUploads <- list(
+  #   "MetaData" = RCV.MetaData,
+  #   "NormCounts" = RCV.Norm,
+  #   "GeneNames" = RCV.Norm,
+  #   "PrevResults" = RCV.Results,
+  #   "status" = status
+  # )
+  PathUploads <- PathUploadsServer("Path-Uploads", DiffResults, DiffUploads)
+  
+  PathResultsServer("Path-Results",
+    PathUploads,
+    DiffResults
+  )
+  
+  observe({
+    invalidateLater(500)
+    #Case when there is any data
+    if(PathUploads$status() != 0){
+      shinyjs::hide("Path-Uploads")
+      shinyjs::show("Path-Results")
+    }
+
+  })
+  
+  #       DOWNLOADING SAVED FILES
+  #________________________________________________
+  output$downloadZip <- downloadHandler(
+    filename = function() {
+      
+      sessionName <- paste0(
+        "SessionDownload_",
+        Sys.time()
+      )
+      
+      print(sessionName)
+      
+      sessionName
+    },
+    content = function(file) {
+      
+      files <- list.files("SavedFiles", full.names = TRUE)
+      print(files)
+      
+      zip(zipfile = file, files = files)
+      
+    },
+    contentType = "application/zip"
+  )
+  
+  
+  
   
 }

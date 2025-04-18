@@ -6,6 +6,8 @@ files <- list.files("modules", "*.R")  # locate all .R files
 sapply(paste0("modules/",files), source)
 files <- list.files("modules/DiffAnalysisModules", "*.R")
 sapply(paste0("modules/DiffAnalysisModules/", files), source)
+files <- list.files("modules/PathAnalysisModules", "*.R")
+sapply(paste0("modules/PathAnalysisModules/", files), source)
 files <- list.files("sourcedFunctions/UI Elements", "*.R")
 sapply(paste0("sourcedFunctions/UI Elements/", files), source)
 files <- list.files("sourcedFunctions/Scripts", "*.R")
@@ -64,13 +66,19 @@ ui <-
         )
         
       ),
-      
+
       tabPanel(
         title = "Pathway Analysis",
         
-        div(id = "Path-Uploads", pathUploadingDataTabUI("Path-Uploads"))
+        div(id = "Path-Uploads", pathUploadingDataTabUI("Path-Uploads")),
+        
+        hidden(
+          div(id = "Path-Results", pathResultsTab("Path-Results"))
+        )
+        
       )
       
       )
     )
   )
+

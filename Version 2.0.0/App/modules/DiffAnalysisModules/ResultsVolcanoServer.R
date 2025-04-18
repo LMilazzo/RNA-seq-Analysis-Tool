@@ -3,6 +3,7 @@ ResultsVolcanoServer <- function(id, Data, Uploads){
     
     ns <- session$ns
     
+    plot <- reactiveVal(NULL)
     #Data ~~~~~~~~~
     # DiffResults <- list(
     #    "contrasts" = list, can be null
@@ -114,8 +115,8 @@ ResultsVolcanoServer <- function(id, Data, Uploads){
       # Genes selected by P value MUTS also have some expression
       #
       # NOTE: these dataframes only consist of gene names
-      p_dens <- round( 10 + (200 - 10) * lab_density )
-      l_dens <- round( 5 + (30 - 5) * lab_density )
+      p_dens <- round( 200 * lab_density )
+      l_dens <- round( 30  * lab_density )
       
       p_top <- data %>%
         filter( ex != "NO" ) %>%
@@ -153,8 +154,7 @@ ResultsVolcanoServer <- function(id, Data, Uploads){
     #look up table
     output$Lookup <- renderDT({
       
-      #df <- data.frame(Uploads$GeneNames())
-      df <- data.frame(1:1000)
+      df <- data.frame(Uploads$GeneNames())
       colnames(df) <- "Genes"
       
       datatable(
@@ -196,7 +196,7 @@ ResultsVolcanoServer <- function(id, Data, Uploads){
       
       if(is.null(vData())){return()}
       
-      plot <- ggplot(data = vData()[[1]], 
+      vp <- ggplot(data = vData()[[1]], 
              aes(
                x = log2FoldChange, 
                y = -log10(padj), 
@@ -250,28 +250,53 @@ ResultsVolcanoServer <- function(id, Data, Uploads){
       
       #Process Searched stuff
       if(length(Search) > 0){
-        plot <- plot + 
+        vp <- vp + 
           geom_point(data = vData()[[2]],
             aes(x = log2FoldChange,
                 y = -log10(padj)
             ),
-            color='mediumseagreen',
+            color='black',
             size=3,
             show.legend = FALSE) +
 
           geom_label_repel(data = vData()[[2]],
                            aes(x = log2FoldChange,y = -log10(padj), label = gene_name), 
                            alpha = 0.8, max.overlaps = Inf,
-                           color = 'mediumseagreen')
+                           color = 'black')
       }
 
       
-      plot
+      plot(vp)
+      
+      plot()
       
     },
       width = function() {ifelse(is.na(input$W), 1000, input$W)},
       height = function() {ifelse(is.na(input$H), 750, input$H)}
     )
+    
+    
+    
+    # #______________________________________SAVING____________________________________
+    observeEvent(input$SavePlot,{
+      
+      showModal(modalDialog(
+        title = "Enter File Name",  # Title of the modal
+        textInput(ns("fileName"), "File Name:", value = ""),  # Text input for the file name
+        radioButtons(ns("extension"), label = "File Extension", choices = c(".jpeg", ".png"), selected = ".png", inline = TRUE, width = "100%"),
+        footer = tagList(
+          modalButton("Cancel"),  # Cancel button to close the modal
+          actionButton(ns("saveFile"), "Save")  # Save button to handle the file name
+        )
+      ))
+      
+    })
+    observeEvent(input$saveFile, {
+      removeModal()
+      saveFile(plot, input$fileName, input$extension, input$W, input$H)
+    })
+    
+    
     
   })
   

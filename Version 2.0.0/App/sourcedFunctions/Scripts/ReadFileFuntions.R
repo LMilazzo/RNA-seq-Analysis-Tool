@@ -47,7 +47,6 @@ readCountsDF <- function(df, filterTarget){
   
 }
 
-
 # Meta Data Files
 readMetaDataDF <- function(md){
   
@@ -69,7 +68,7 @@ readMetaDataDF <- function(md){
   
 }
 
-# DEG Results File
+# DEG Results Files
 readDegDF <- function(data, metaData){
   
   #                   CHECK FOR REQ COLUMNS
@@ -155,5 +154,103 @@ readDegDF <- function(data, metaData){
       "vst_obj" = vsd
     )
   )
+  
+}
+
+# Path Results Files
+readPathDF <- function(data){
+
+    
+  req_cols <- c("ID","Term_Description","Fold_Enrichment","occurrence",
+                "support","lowest_p","highest_p","non_Signif_Snw_Genes",
+                "Up_regulated","Down_regulated","all_pathway_genes",
+                "num_genes_in_path","Cluster","Status")
+    
+  if(!all(req_cols %in% colnames(data))){
+      showErrorModal('There are some missing cols in the uploaded set, please ensure that your data is a *Clustered* result from the pathfindR package.')
+      return()
+    }
+    
+  #Assert correct classes
+  original_na_counts <- sapply(colnames(data), 
+                               function(col) sum(is.na(data[[col]]))) 
+    
+  data$ID <- as.character(data$ID)
+  data$Term_Description <- as.character(data$Term_Description)
+  data$non_Signif_Snw_Genes <- as.character(data$non_Signif_Snw_Genes)
+  data$Up_regulated <- as.character(data$Up_regulated)
+  data$Down_regulated <- as.character(data$Down_regulated)
+  data$all_pathway_genes <- as.character(data$all_pathway_genes)
+  data$Status <- as.character(data$Status)
+  data$Fold_Enrichment <- as.numeric(data$Fold_Enrichment)
+  data$occurrence <- as.numeric(data$occurrence)
+  data$support <- as.numeric(data$support)
+  data$lowest_p <- as.numeric(data$lowest_p)
+  data$highest_p <- as.numeric(data$highest_p)
+  data$num_genes_in_path <- as.numeric(data$num_genes_in_path)
+  data$Cluster <- as.numeric(data$Cluster)
+  
+  for(i in colnames(data)){
+    new_na <- sum(is.na(data[[i]]))
+    if(!new_na == original_na_counts[[i]]){
+      showErrorModal(paste0('Coercion of column ', i, ' to proper class introduced na values. ', i, ' requires numeric.'))
+      return()
+    }
+  }
+  
+  return(data)
+
+}
+
+# Path Normalized Counts
+readPathCounts <- function(data){
+  #print(head(data))
+  #                   CHECK REQUIRED COLUMS
+  #_______________________________________________________________
+  
+  #Check for req columns
+  if(! 'gene_id' %in% colnames(data) ){
+    showErrorModal('Required columns gene_id is missing in the counts matrix')
+    return()
+  }
+  if(! 'gene_name' %in% colnames(data) && !'Gene_symbol' %in% colnames(data)){
+    showErrorModal('Required columns Gene_symbol is missing in the counts matrix')
+    return()
+  }
+  
+  #                   CHECK DUPLICATE IDS
+  #_______________________________________________________________
+  
+  #Check duplicate ids
+  if(anyDuplicated(data %>% select(gene_id))){
+    showErrorModal('There were duplicate ids in the counts matrix')
+    return()
+  }
+  
+  #                   FIND SAMPLE COLUMN NAMES
+  #_______________________________________________________________
+  sample_cols <- data %>% select(starts_with('.'))
+  if(ncol(sample_cols) < 2){
+    showErrorModal('There were not enough samples present')
+    return()
+  }
+  
+  #                   FIND GENE NAMES COLUMN
+  #_______________________________________________________________
+  pos <- which(names(data) %in% c('gene_name', 'Gene_symbol'))
+  pos <- pos[1]
+  
+  #                     BUILD DATAFRAME
+  #_______________________________________________________________
+  ab <- sample_cols
+  ab$Gene_symbol <- data[, pos]
+  ab <- ab %>% select(Gene_symbol, everything())
+  
+  #               CREATE A DATAFRAME OF GENE NAMES
+  #_______________________________________________________________
+  gene_names <- ab$Gene_symbol
+  
+  #RETURN
+  return(list(ab, gene_names))
   
 }

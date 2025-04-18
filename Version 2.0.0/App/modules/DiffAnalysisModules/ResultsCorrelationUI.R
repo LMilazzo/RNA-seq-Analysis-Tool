@@ -15,26 +15,36 @@ ResultsCorrelationUI <- function(id){
         tabPanel(
           "Data",                   
           div(id = ns("Data-Stuff"),
-            #Display Numbers
-            div(id="NumDisplay",
-              p("Display Values: ", style = "margin-right: 15px; padding-bottom: 12px"),
-              checkboxInput(ns("NumDisplay"), "", value = FALSE),
-              style = "font-size: 17px; display: inline-flex; align-text: center; justify-content: center; align-items: center; overflow: auto;"
-            ),  
             #Meta Data to show----
             div(class = "collapsible-container",
-                tags$details(
-                  tags$summary(
-                    p("Annotations", style = "margin-right: 5%; padding-bottom: 2%"),
-                  ),
-                  tags$div(class = "content", uiOutput(ns("Meta")))
+              tags$details(
+                tags$summary(
+                  p("Annotations", style = "margin-right: 5%; padding-bottom: 2%"),
                 ),
-                style = "padding-right: 5px; margin-top: 10px;"
+                tags$div(class = "content", uiOutput(ns("Meta")))
+              ),
+              style = "margin-top: 10px;"
             ),
-            style = "border: 2px solid #272b30; border-radius: 15px; padding-left: 5px; margin-top: 5px; overflow: auto;"
-          )
-          
-          
+            style = "border: 2px solid #272b30; border-radius: 15px; padding-left: 5px; padding-right: 5px;"
+          ),
+          div(id = ns("other-Stuff"),
+            #Cluster
+            p("Euclidean Dendrograms: ", style = "margin-right: 15px; padding-bottom: 12px"),
+            div(id="Dendrograms",
+                checkboxInput(ns("ClusterRows"), "Row", value = TRUE),
+                checkboxInput(ns("ClusterCols"), "Column", value = TRUE),
+                style = "font-size: 17px; display: flex; justify-content: space-evenly; align-items: center; width: 100%;"
+            ),  
+            #Display Numbers
+            div(id="NumDisplay",
+                p("Display Values: ", style = "margin-right: 15px; padding-bottom: 12px"),
+                checkboxInput(ns("NumDisplay"), "", value = FALSE),
+                style = "font-size: 17px; display: inline-flex; align-text: center; justify-content: center; align-items: center; overflow: auto;"
+            ),  
+            style = "border: 2px solid #272b30; border-radius: 15px; padding-left: 5px; margin-top: 10px; overflow: auto; font-size: 17px;"
+          ),
+          savePlotButton(id),
+          style = "margin-top: 10px;"
         ),
         #----
         #   SETTINGS ----
