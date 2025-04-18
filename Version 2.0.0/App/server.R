@@ -118,6 +118,16 @@ server <- function(input, output, session){
     contentType = "application/zip"
   )
   
+  #Unlink temp directory on session end
+  session$onSessionEnded(function() {
+    # List all files in the directory
+    files <- list.files("SavedFiles", full.names = TRUE)
+    
+    # Remove all files in the directory
+    unlink(files, recursive = TRUE, force = TRUE)
+    print("unlinked temp dir")
+  })
+  
   
   
   
