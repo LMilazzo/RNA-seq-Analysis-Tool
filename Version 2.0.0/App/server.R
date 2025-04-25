@@ -98,21 +98,14 @@ server <- function(input, output, session){
   output$downloadZip <- downloadHandler(
     filename = function() {
       
-      sessionName <- paste0(
-        "SessionDownload_",
-        Sys.time()
-      )
-      
-      print(sessionName)
-      
-      sessionName
+      paste0("SessionDownload_", format(Sys.time(), "%Y%m%d_%H%M%S"), ".zip")
+
     },
     content = function(file) {
       
       files <- list.files("SavedFiles", full.names = TRUE)
-      print(files)
       
-      zip(zipfile = file, files = files)
+      return(zip(zipfile = file, files = files))
       
     },
     contentType = "application/zip"

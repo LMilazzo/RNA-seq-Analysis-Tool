@@ -130,7 +130,7 @@ ResultsCorrelationUI <- function(id){
       
       div(
         withSpinner(
-          plotOutput(ns("test")),
+          plotOutput(ns("plot")),
           type = 6
         )
       )

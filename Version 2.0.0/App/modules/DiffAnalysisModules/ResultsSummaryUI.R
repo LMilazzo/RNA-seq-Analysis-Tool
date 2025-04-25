@@ -3,6 +3,7 @@ ResultsSummaryUI <- function(id){
   ns <- NS(id)
 
   fluidPage(
+    br(),
     
     sidebarPanel(
       width = 3,
@@ -80,7 +81,6 @@ ResultsSummaryUI <- function(id){
         DTOutput(ns("Res"))
       )
     )
-    
     
     # sidebarLayout(
     #   sidebarPanel(

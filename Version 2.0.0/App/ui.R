@@ -1,5 +1,6 @@
 library(shiny)
 library(shinycssloaders)
+library(shinyWidgets)
 source("Pages-Themes-Assets/CSS/Styles.R")
 
 files <- list.files("modules", "*.R")  # locate all .R files
@@ -26,59 +27,63 @@ ui <-
 
     fluidPage(
       
-      navbarPage(id = "Landing", title = "🧬",
-      theme = shinytheme("slate"),
-      selected = "Differential Gene Expression",
-      collapsible = TRUE,
-      
-      
-      header = tagList(
-        #Reload and save buttons
-        div(
-          actionButton("ReloadApp", "Restart Session",
-            style = 
-            "background-color: #FF6F61; color: black; border-color: black; background-image: none; margin-right: 5%"
-          ),
-          shiny::downloadButton(
-            outputId = 'downloadZip', 
-            label = 'Download Saved files',
-            style = " border-color: #4CAF50; background-image: none; margin-right: 5%"
-          ),
-          style = "text-align: right"
-        )
+      setBackgroundImage(
+        src = ""
       ),
       
-      helpTab(),
-    
-      tabPanel(
-        title = "Differential Gene Expression",
+      navbarPage(id = "Landing", title = "🧬",
+        theme = shinytheme("slate"),
+        selected = "Differential Gene Expression",
         
-        #hidden(
-          div(id = "Diff-Uploads", diffUploadingDataTab("Diff-Uploads")),#######
-        #),
+        collapsible = TRUE,
         
-        hidden(
-          div(id = "Diff-Intermediate", diffIntermediateTab("Diff-Intermediate"))
+        header = tagList(
+          #Reload and save buttons
+          div(
+            actionButton("ReloadApp", "Restart Session",
+              style = 
+              "background-color: #FF6F61; color: black; border-color: black; background-image: none; margin-right: 5%"
+            ),
+            shiny::downloadButton(
+              outputId = 'downloadZip', 
+              label = 'Download Saved files',
+              style = " border-color: #4CAF50; background-image: none; margin-right: 5%"
+            ),
+            style = "text-align: right"
+          )
         ),
         
-        hidden(
-          div(id = "Diff-Results", diffResultsTab("Diff-Results"))
-        )
-        
-      ),
-
-      tabPanel(
-        title = "Pathway Analysis",
-        
-        div(id = "Path-Uploads", pathUploadingDataTabUI("Path-Uploads")),
-        
-        hidden(
-          div(id = "Path-Results", pathResultsTab("Path-Results"))
-        )
-        
-      )
+        helpTab(),
       
+        tabPanel(
+          title = "Differential Gene Expression",
+          
+          #hidden(
+            div(id = "Diff-Uploads", diffUploadingDataTab("Diff-Uploads")),#######
+          #),
+          
+          hidden(
+            div(id = "Diff-Intermediate", diffIntermediateTab("Diff-Intermediate"))
+          ),
+          
+          hidden(
+            div(id = "Diff-Results", diffResultsTab("Diff-Results"))
+          )
+          
+        ),
+  
+        tabPanel(
+          title = "Pathway Analysis",
+          
+          div(id = "Path-Uploads", pathUploadingDataTabUI("Path-Uploads")),
+          
+          hidden(
+            div(id = "Path-Results", pathResultsTab("Path-Results"))
+          )
+        )
+        
       )
     )
+    
   )
 

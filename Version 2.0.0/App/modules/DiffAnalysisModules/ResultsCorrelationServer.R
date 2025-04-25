@@ -73,7 +73,7 @@ ResultsCorrelationServer <- function(id, Data, Uploads){
       
     })
   
-    output$test <- renderPlot({
+    output$plot <- renderPlot({
       #make/save
       plot(
         pheatmap(
