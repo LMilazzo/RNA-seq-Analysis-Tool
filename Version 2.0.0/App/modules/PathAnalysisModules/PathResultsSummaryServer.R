@@ -153,9 +153,9 @@ PathResultsSummaryServer <- function(id, Data){
       
       if(nrow(s) < 1){return()}
       
-      Up <-  PivotGeneList(s$Up_regulated)
-      Down <-  PivotGeneList(s$Down_regulated)
-      All <-  PivotGeneList(s$all_pathway_genes)
+      Up <-  PivotList(s$Up_regulated)
+      Down <-  PivotList(s$Down_regulated)
+      All <-  PivotList(s$all_pathway_genes)
       All <- setdiff(All, c(Up, Down))
       
       fluidRow(

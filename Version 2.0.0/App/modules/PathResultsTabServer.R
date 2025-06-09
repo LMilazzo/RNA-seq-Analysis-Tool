@@ -24,6 +24,7 @@ PathResultsServer <- function(id, Data, DiffData){
     
     PathResultsSummaryServer("Results-Summary", Data)
     PathResultsPathMapServer("Results-PathMap", Data, DiffData)
+    PathResultsCaseScoresServer("Results-CaseScores", Data)
     
   })
 }

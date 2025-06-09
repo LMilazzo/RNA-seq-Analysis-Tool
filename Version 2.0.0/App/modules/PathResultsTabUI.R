@@ -16,6 +16,11 @@ pathResultsTab <- function(id){
       tabPanel(
         title = "Gene Expression Heatmap",
         PathResultsPathMapUI(ns("Results-PathMap"))
+      ),
+      
+      tabPanel(
+        title = "Case Enrichment Score Map",
+        PathResultsCaseScoresUI(ns("Results-CaseScores"))
       )
     
     )

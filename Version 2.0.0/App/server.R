@@ -118,7 +118,8 @@ server <- function(input, output, session){
     
     # Remove all files in the directory
     unlink(files, recursive = TRUE, force = TRUE)
-    print("unlinked temp dir")
+    #print("unlinked temp dir")
+    #
   })
   
   

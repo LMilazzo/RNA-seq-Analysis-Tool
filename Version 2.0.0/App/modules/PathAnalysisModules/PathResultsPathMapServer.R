@@ -36,11 +36,12 @@ PathResultsPathMapServer <- function(id, Data, DiffData){
     # )
     
     Search <- debounce(reactive(input$PathWayGeneListingSearch), 750)
-    gList <- debounce(reactive(ifelse(is.null(input$gList), "", PivotGeneList(input$gList))), 750)
+    gList <- debounce(reactive(ifelse(is.null(input$gList), "", PivotList(input$gList))), 750)
     gSlider <- debounce(reactive(input$gSlider), 750)
     Title <- debounce(reactive(input$Title), 750)
     Subtitle <- debounce(reactive(input$Subtitle), 750)
     Caption <- debounce(reactive(input$Caption), 750)
+    
     #Annotations 
     Annotations <- reactiveVal(NULL)
     Colors <- reactiveVal(NULL)
@@ -109,12 +110,12 @@ PathResultsPathMapServer <- function(id, Data, DiffData){
       if(nrow(p) < 1){return()}
       
       Genes.in.Path <- c(
-        PivotGeneList(p$non_Signif_Snw_Genes)[[1]],
-        PivotGeneList(p$Up_regulated)[[1]],
-        PivotGeneList(p$Down_regulated)[[1]],
-        PivotGeneList(p$all_pathway_genes)[[1]]
+        PivotList(p$non_Signif_Snw_Genes)[[1]],
+        PivotList(p$Up_regulated)[[1]],
+        PivotList(p$Down_regulated)[[1]],
+        PivotList(p$all_pathway_genes)[[1]]
       )
-      
+
       #Use upload
       if(!is.null(Data$NormCounts())){
         plot.data <- Data$NormCounts() %>%
@@ -147,6 +148,7 @@ PathResultsPathMapServer <- function(id, Data, DiffData){
         plot.data <- plot.data %>%
           filter(tolower(Gene_symbol) %in% tolower(ref))
       
+        print(plot.data)
       }
       if(input$InclusionMethod == "Slider"){
 
@@ -172,15 +174,12 @@ PathResultsPathMapServer <- function(id, Data, DiffData){
 
       }
       
-      
-      
       rownames(plot.data) <- plot.data$Gene_symbol
       plot.data <- plot.data %>% select(-Gene_symbol)
       
       plot.data <- log2(as.matrix(plot.data) + 1)
       
       if(nrow(plot.data) < 1){return()}
-      
       
       h <- pheatmap(
         plot.data,
@@ -203,11 +202,11 @@ PathResultsPathMapServer <- function(id, Data, DiffData){
           caption = Caption(),
         ) +
         theme(
-          plot.title = element_text(size = input$Font + + 5, color = "black", margin=margin(20,20,5,10,"pt")),
+          plot.title = element_text(size = input$Font + 5, color = "black", margin=margin(20,20,5,10,"pt")),
           plot.subtitle = element_text(size = input$Font + 2, color = "black", margin=margin(5,5,15,10,"pt")),
           plot.caption = element_text(size = input$Font - 2, color = "black", margin=margin(10, 10, 10, 10, "pt"))
         )
-    
+      
       plot(h)
       
       plot()
@@ -247,10 +246,10 @@ PathResultsPathMapServer <- function(id, Data, DiffData){
       }
       print("2")
       df <- data.frame("Genes" = c(
-        PivotGeneList(p$non_Signif_Snw_Genes)[[1]],
-        PivotGeneList(p$Up_regulated)[[1]],
-        PivotGeneList(p$Down_regulated)[[1]],
-        PivotGeneList(p$all_pathway_genes)[[1]]
+        PivotList(p$non_Signif_Snw_Genes)[[1]],
+        PivotList(p$Up_regulated)[[1]],
+        PivotList(p$Down_regulated)[[1]],
+        PivotList(p$all_pathway_genes)[[1]]
       ))
       print(head(df))
       datatable(
