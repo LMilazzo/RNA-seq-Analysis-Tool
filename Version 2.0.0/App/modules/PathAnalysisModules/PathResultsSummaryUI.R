@@ -23,6 +23,7 @@ PathResultsSummaryUI <- function(id){
       #PVAL STATS
       div(
         div(
+          p("Fold Change: ", style = "margin-bottom: 18px; margin-top: 16px; font-size: 18px; text-align: left;"),
           DTOutput(ns("PvalStats")), #DT
           style = "width: 90%; text-align: center; font-size: 16px; overflow: auto;"
         ),
