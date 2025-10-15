@@ -14,7 +14,7 @@
 
 1. Clone this repository to your local machine using Git:
     ```bash
-    git clone https://github.com/your-username/RNA-seq-Analysis-Tool.git
+    git clone https://github.com/lmilazzo/RNA-seq-Analysis-Tool.git
     cd RNA-seq-Analysis-Tool
     ```
 
