@@ -31,7 +31,7 @@
 
 ## Running the Application
 
-To run the application, use the provided `run_app.R` script contained in either the Version 1.0.0 or Version 2.0.0 directories. 
+To run the application, use the provided `run_app.R` script contained in either the Version 1.0.0 or Version 2.0.0 directories. Version 1.0.0 is not recomended and some pages may break.
 
 1. Open your R console or an R IDE (e.g., RStudio).
 
